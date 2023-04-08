@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pilates Community',
+      title: 'BLoC Architecture',
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.grey.shade200,
         primarySwatch: Colors.blue,
