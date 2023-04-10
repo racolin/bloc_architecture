@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../business_logic/message_notify.dart';
+import '../business_logic/message_notify.dart';
 import '../../presentation/dialogs/message_notify_type.dart';
 import '../../presentation/res/dimen/dimens.dart';
 
@@ -16,12 +16,11 @@ class DialogWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = _getColor(messageNotify.messageType);
     return CupertinoAlertDialog(
       title: Text(
         messageNotify.title,
         style: TextStyle(
-          color: color,
+          color: messageNotify.messageType.color,
           fontSize: fontLG,
           fontWeight: FontWeight.w600,
         ),
@@ -36,21 +35,5 @@ class DialogWidget extends StatelessWidget {
       ),
       actions: actions,
     );
-  }
-
-  Color _getColor(MessageType type) {
-    switch (type) {
-      case MessageType.error:
-        return Colors.red;
-      case MessageType.failure:
-        return Colors.orange;
-      case MessageType.success:
-        return Colors.green;
-      case MessageType.info:
-        return Colors.blue;
-      case MessageType.none:
-        return Colors.grey;
-    }
-    return Colors.grey;
   }
 }

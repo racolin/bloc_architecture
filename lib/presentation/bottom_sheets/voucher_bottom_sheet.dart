@@ -1,4 +1,6 @@
+import '../business_logic/cubit/voucher_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../supports/convert.dart';
 import '../../data/models/voucher_model.dart';
@@ -120,7 +122,8 @@ class VoucherBottomSheet extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
+              Positioned
+                (
                 top: 0,
                 right: 0,
                 child: IconButton(
@@ -129,6 +132,8 @@ class VoucherBottomSheet extends StatelessWidget {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
+                    context.read<VoucherCubit>().unselectItem();
+                    // Navigator.pop(context);
                   },
                   icon: const Icon(
                     Icons.close,

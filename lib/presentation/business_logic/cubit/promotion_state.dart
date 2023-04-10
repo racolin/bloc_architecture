@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
-import '../../data/models/promotion_category_model.dart';
-import '../../data/models/promotion_model.dart';
+import '../../../data/models/promotion_category_model.dart';
+import '../../../data/models/promotion_model.dart';
+import '../message_notify.dart';
 
 @immutable
 abstract class PromotionState {}
@@ -74,7 +75,11 @@ class PromotionLoaded extends PromotionState {
 }
 
 class PromotionFailure extends PromotionState {
-  PromotionFailure() {
+  MessageNotify message;
+
+  PromotionFailure({
+    required this.message,
+  }) {
     print(runtimeType);
   }
 }

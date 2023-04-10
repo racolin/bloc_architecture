@@ -1,4 +1,4 @@
-import '../../business_logic/message_notify.dart';
+import '../message_notify.dart';
 
 class ExceptionBloc implements Exception {
   MessageNotify message;

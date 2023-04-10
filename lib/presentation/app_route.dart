@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../business_logic/cubit/home_cubit.dart';
+import 'business_logic/cubit/home_cubit.dart';
 import '../../presentation/screens/home_screen.dart';
 
-import '../business_logic/cubit/promotion_cubit.dart';
-import '../business_logic/cubit/voucher_cubit.dart';
+import 'business_logic/cubit/promotion_cubit.dart';
+import 'business_logic/cubit/voucher_cubit.dart';
 
 class AppRoute {
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {

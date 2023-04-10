@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../business_logic/cubit/promotion_cubit.dart';
-import '../../business_logic/cubit/voucher_cubit.dart';
+import '../business_logic/cubit/promotion_cubit.dart';
+import '../business_logic/cubit/voucher_cubit.dart';
 import '../../presentation/pages/promotion_page.dart';
 import '../../presentation/pages/voucher_page.dart';
 

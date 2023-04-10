@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../business_logic/message_notify.dart';
+import '../business_logic/message_notify.dart';
 import '../../data/models/voucher_model.dart';
 import '../../presentation/bottom_sheets/voucher_bottom_sheet.dart';
 import '../../presentation/dialogs/dialog_widget.dart';
 import '../../presentation/dialogs/message_notify_type.dart';
 import '../../presentation/pages/voucher_screen.dart';
 
-import '../../business_logic/cubit/promotion_cubit.dart';
-import '../../business_logic/cubit/promotion_state.dart';
-import '../../business_logic/cubit/voucher_cubit.dart';
-import '../../business_logic/cubit/voucher_state.dart';
+import '../business_logic/cubit/promotion_cubit.dart';
+import '../business_logic/cubit/promotion_state.dart';
+import '../business_logic/cubit/voucher_cubit.dart';
+import '../business_logic/cubit/voucher_state.dart';
 import '../res/dimen/dimens.dart';
 import '../res/strings/values.dart';
 import '../widgets/loading_widget.dart';
@@ -73,36 +73,43 @@ class VoucherPage extends StatelessWidget {
           ),
           BlocConsumer<VoucherCubit, VoucherState>(
             listener: (context, state) {
-              if (state is VoucherLoaded && state.selectedId != null) {
-                VoucherModel? model = state.getItemSelected();
-                if (model != null) {
-                  showModalBottomSheet(
-                    backgroundColor: Colors.transparent,
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (context) => VoucherBottomSheet(
-                      voucher: model,
-                    ),
-                  );
-                } else {
-                  showCupertinoDialog(
-                    context: context,
-                    builder: (context) => DialogWidget(
-                      messageNotify: MessageNotify(
-                        messageType: MessageType.error,
-                        title: 'Lỗi!',
-                        content: 'Có lỗi đã xảy ra khi thực hiện mở mục này?',
-                      ),
-                      actions: [
-                        CupertinoDialogAction(
-                          child: const Text('OK'),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+              if (state is VoucherLoaded) {
+                if (state.selectedId != null) {
+                  VoucherModel? model = state.getItemSelected();
+                  if (model != null) {
+                    showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (ctx) => BlocProvider.value(
+                        value: BlocProvider.of<VoucherCubit>(context),
+                        child: VoucherBottomSheet(
+                          voucher: model,
                         ),
-                      ],
-                    ),
-                  );
+                      ),
+                    );
+                  } else {
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (context) => DialogWidget(
+                        messageNotify: MessageNotify(
+                          messageType: MessageType.error,
+                          title: 'Lỗi!',
+                          content: 'Có lỗi đã xảy ra khi thực hiện mở mục này?',
+                        ),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                } else {
+                  // Navigator.pop(context);
                 }
               } else {}
             },

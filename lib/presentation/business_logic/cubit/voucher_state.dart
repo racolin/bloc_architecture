@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import '../../data/models/voucher_category_model.dart';
-import '../../data/models/voucher_model.dart';
+import '../../../data/models/voucher_category_model.dart';
+import '../../../data/models/voucher_model.dart';
 
 @immutable
 abstract class VoucherState {}
@@ -55,7 +55,7 @@ class VoucherLoaded extends VoucherState {
     return VoucherLoaded(
       list: list ?? this.list,
       typeList: typeList ?? this.typeList,
-      selectedId: selectedId ?? this.selectedId,
+      selectedId: selectedId,
       isLoadMore: isLoadMore ?? this.isLoadMore,
     );
   }

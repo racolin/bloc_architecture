@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../business_logic/cubit/voucher_cubit.dart';
-import '../../business_logic/cubit/voucher_state.dart';
+import '../business_logic/cubit/voucher_cubit.dart';
+import '../business_logic/cubit/voucher_state.dart';
 import '../res/dimen/dimens.dart';
-import '../res/strings/values.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/voucher_widget.dart';
 

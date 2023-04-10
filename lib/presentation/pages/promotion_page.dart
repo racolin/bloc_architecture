@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../business_logic/cubit/promotion_cubit.dart';
-import '../../business_logic/cubit/promotion_state.dart';
+import '../business_logic/cubit/promotion_cubit.dart';
+import '../business_logic/cubit/promotion_state.dart';
 import '../../data/models/promotion_model.dart';
 import '../res/dimen/dimens.dart';
 import '../res/strings/values.dart';
@@ -11,6 +11,7 @@ import '../widgets/loading_widget.dart';
 import '../widgets/promotion_large_widget.dart';
 import '../widgets/promotion_me_widget.dart';
 import '../widgets/promotion_small_widget.dart';
+import 'message_page.dart';
 
 class PromotionPage extends StatelessWidget {
   const PromotionPage({
@@ -19,19 +20,19 @@ class PromotionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: BlocBuilder<PromotionCubit, PromotionState>(
-        builder: (context, state) {
-          switch (state.runtimeType) {
-            case PromotionInitial:
-              return const SizedBox();
-            case PromotionLoading:
-              return const Center(
-                child: LoadingWidget(),
-              );
-            case PromotionLoaded:
-              state as PromotionLoaded;
-              return Column(
+    return BlocBuilder<PromotionCubit, PromotionState>(
+      builder: (context, state) {
+        switch (state.runtimeType) {
+          case PromotionInitial:
+            return const SizedBox();
+          case PromotionLoading:
+            return const Center(
+              child: LoadingWidget(),
+            );
+          case PromotionLoaded:
+            state as PromotionLoaded;
+            return SingleChildScrollView(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
@@ -70,7 +71,8 @@ class PromotionPage extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: state.getOutStanding(60)
+                      children: state
+                          .getOutStanding(60)
                           .map(
                             (e) => Row(
                               mainAxisSize: MainAxisSize.min,
@@ -78,7 +80,9 @@ class PromotionPage extends StatelessWidget {
                                 PromotionLargeWidget(
                                   promotion: e,
                                   onClick: () {
-
+                                    context
+                                        .read<PromotionCubit>()
+                                        .selectItemBug(0);
                                   },
                                 ),
                                 const SizedBox(
@@ -126,16 +130,15 @@ class PromotionPage extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: state.getFromMe()
+                      children: state
+                          .getFromMe()
                           .map(
                             (e) => Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 PromotionMeWidget(
                                   promotion: e,
-                                  onClick: () {
-
-                                  },
+                                  onClick: () {},
                                 ),
                                 const SizedBox(
                                   width: spaceXS,
@@ -253,11 +256,21 @@ class PromotionPage extends StatelessWidget {
                     height: dimLG,
                   ),
                 ],
-              );
-          }
-          return const SizedBox();
-        },
-      ),
+              ),
+            );
+          case PromotionFailure:
+            return MessagePage(
+              message: (state as PromotionFailure).message,
+              action: (ctx) => ElevatedButton(
+                onPressed: () {
+                  context.read<PromotionCubit>().fetchData();
+                },
+                child: const Text('Tải lại'),
+              ),
+            );
+        }
+        return const SizedBox();
+      },
     );
   }
 
@@ -300,9 +313,7 @@ class PromotionPage extends StatelessWidget {
                 children: [
                   PromotionSmallWidget(
                     promotion: promotion,
-                    onClick: () {
-
-                    },
+                    onClick: () {},
                   ),
                   const SizedBox(
                     height: spaceXS,

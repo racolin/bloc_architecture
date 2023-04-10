@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../business_logic/cubit/promotion_state.dart';
+import '../../../data/models/promotion_category_model.dart';
+import '../../../data/models/promotion_model.dart';
+import '../../dialogs/message_notify_type.dart';
+import 'promotion_state.dart';
 
-import '../../data/models/promotion_category_model.dart';
-import '../../data/models/promotion_model.dart';
-import '../../presentation/dialogs/message_notify_type.dart';
 import '../message_notify.dart';
 import 'exception_bloc.dart';
 
@@ -190,17 +190,44 @@ class PromotionCubit extends Cubit<PromotionState> {
       reloadList: state.reloadList + [index],
     ));
 
-    print('T$index ${state.reloadList}');
-
     await Future.delayed(const Duration(seconds: 3));
+
+    state = this.state as PromotionLoaded;
 
     emit(state.copyWith(
       selectedIndex: index,
-      reloadList: state.reloadList.where((e) => e == index).toList(),
+      reloadList: state.reloadList.where((e) => e != index).toList(),
     ));
 
-    print('T$index ${state.reloadList}');
+    return null;
+  }
+
+  Future<MessageNotify?> selectItemBug(int index) async {
+    if (this.state is! PromotionLoaded) {
+      return MessageNotify(
+        messageType: MessageType.failure,
+        title: 'Cảnh báo',
+        content: 'Giao diện chưa tải xong, hãy thử lại!',
+      );
+    }
+    var state = this.state as PromotionLoaded;
+
+    emit(
+      PromotionFailure(
+        message: MessageNotify(
+          messageType: MessageType.failure,
+          title: 'Lỗi!',
+          content: 'Có lỗi xảy ra khi thực hiện thao tác này!',
+        ),
+      ),
+    );
 
     return null;
+
+    return MessageNotify(
+      messageType: MessageType.failure,
+      title: 'Lỗi!',
+      content: 'Có lỗi xảy ra khi thực hiện thao tác này!',
+    );
   }
 }

@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../business_logic/cubit/exception_bloc.dart';
-import '../../business_logic/cubit/voucher_state.dart';
-import '../../business_logic/message_notify.dart';
-import '../../presentation/dialogs/message_notify_type.dart';
+import '../../../data/models/voucher_model.dart';
+import '../../dialogs/message_notify_type.dart';
+import 'exception_bloc.dart';
+import 'voucher_state.dart';
+import '../message_notify.dart';
 
-import '../../data/models/voucher_category_model.dart';
-import '../../data/models/voucher_model.dart';
+import '../../../data/models/voucher_category_model.dart';
+import '../../../data/models/voucher_model.dart';
 
 class VoucherCubit extends Cubit<VoucherState> {
   VoucherCubit()
@@ -198,6 +199,22 @@ class VoucherCubit extends Cubit<VoucherState> {
     }
     var state = this.state as VoucherLoaded;
     emit(state.copyWith(selectedId: id));
+    return null;
+  }
+
+  MessageNotify? unselectItem() {
+    if (this.state is! VoucherLoaded) {
+      return MessageNotify(
+        messageType: MessageType.failure,
+        title: 'Cảnh báo',
+        content: 'Giao diện chưa tải xong, hãy thử lại!',
+      );
+    }
+    var state = this.state as VoucherLoaded;
+    if (state.selectedId == null) {
+      return null;
+    }
+    emit(state.copyWith(selectedId: null));
     return null;
   }
 }
